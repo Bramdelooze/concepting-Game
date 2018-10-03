@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
     public float moveSpeed;
     public float jumpHeight;
     private float health = 500;
+    public float reloadTime;
+    public float projectileSpeed;
+    public float shootingDamage;
+    public int direction;
+
     public Image healthBar;
+    public Text reloadText;
 
     public bool isGrounded = false;
     public Transform GroundCheck;
@@ -20,9 +27,10 @@ public class PlayerController : MonoBehaviour {
     public KeyCode shoot;
 
     Rigidbody2D rb;
+
     public GameObject projectile;
-    private float projectileSpeed;
-    private int direction;
+
+    private bool isReloading;
 
     private void Start()
     {
@@ -58,11 +66,16 @@ public class PlayerController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        health -= 12.75f * Time.deltaTime;
+        //health -= 12.75f * Time.deltaTime;
 
-        if (Input.GetKeyDown(shoot))
+        if (Input.GetKeyDown(shoot) && !isReloading)
         {
             Fire();
+            StartCoroutine(Reload());
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -72,14 +85,12 @@ public class PlayerController : MonoBehaviour {
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
             direction = 1;
-            projectileSpeed = 700 * Time.deltaTime;
             rb.AddForce(Vector2.right * moveSpeed);
         }
         else
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
             direction = -1;
-            projectileSpeed = -700 * Time.deltaTime;
             rb.AddForce(Vector2.left * moveSpeed);
         }
     }
@@ -92,10 +103,30 @@ public class PlayerController : MonoBehaviour {
     void Fire()
     {
         Vector3 offset = new Vector3(direction, 0, 0);
-        health -= 20f;
-
+        health -= shootingDamage;
         GameObject bullet = Instantiate(projectile, transform.position + offset, Quaternion.identity) as GameObject;
-        bullet.GetComponent<Rigidbody2D>().velocity += new Vector2(projectileSpeed, 0f);
+        Vector2 bulletDirection;
+
+        if(direction == 1)
+        {
+            bulletDirection = Vector2.right * projectileSpeed;
+        }
+        else
+        {
+            bulletDirection = Vector2.left * projectileSpeed;
+        }
+
+        bullet.GetComponent<Rigidbody2D>().velocity += bulletDirection;
+    }
+
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        reloadText.text = "Reloading...";
+        yield return new WaitForSeconds(reloadTime);
+        isReloading = false;
+        reloadText.text = "";
+        StopCoroutine(Reload());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
