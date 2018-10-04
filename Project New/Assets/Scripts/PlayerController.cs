@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, 0.35f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, .35f, groundLayer);
 
         rb.velocity = Vector2.up * rb.velocity.y;
 
