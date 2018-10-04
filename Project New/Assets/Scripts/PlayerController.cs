@@ -8,33 +8,35 @@ public class PlayerController : MonoBehaviour {
 
     public float moveSpeed;
     public float jumpHeight;
-    private float health = 500;
     public float reloadTime;
     public float projectileSpeed;
     public float shootingDamage;
-    public int direction;
+    public float health;
+    private float startHealth;
 
+    public int direction;
     public Image healthBar;
     public Text reloadText;
 
-    public bool isGrounded = false;
     public Transform GroundCheck;
     public LayerMask groundLayer;
+    private bool isGrounded = false;
 
     public KeyCode left;
     public KeyCode right;
     public KeyCode jump;
     public KeyCode shoot;
 
-    Rigidbody2D rb;
+    private Rigidbody2D rb;
 
     public GameObject projectile;
 
     private bool isReloading;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        startHealth = health;
     }
 
     void FixedUpdate()
@@ -61,7 +63,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        healthBar.fillAmount = health / 500;
+        healthBar.fillAmount = health / startHealth;
         if (health <= 0)
         {
             Destroy(gameObject);
@@ -75,7 +77,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
