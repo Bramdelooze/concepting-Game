@@ -595,6 +595,47 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6e647dac2dc7204a9952e0776c9a7a6, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1025115599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1025115601}
+  - component: {fileID: 1025115600}
+  m_Layer: 0
+  m_Name: Levelmanager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1025115600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025115599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787fd73fddb30a54599f0cb56f5db69f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDied: 0
+--- !u!4 &1025115601
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025115599}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1026697120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1083,11 @@ Prefab:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 71291952}
+    - target: {fileID: 114460207445625526, guid: 2ab17773deb42b34ca2bf155927e2a48,
+        type: 2}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 1025115600}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ab17773deb42b34ca2bf155927e2a48, type: 2}
   m_IsPrefabParent: 0
@@ -1209,6 +1255,11 @@ Prefab:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1096827645}
+    - target: {fileID: 114188279095793492, guid: 90b403858f3a5a748baaef901e2882f4,
+        type: 2}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 1025115600}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b403858f3a5a748baaef901e2882f4, type: 2}
   m_IsPrefabParent: 0

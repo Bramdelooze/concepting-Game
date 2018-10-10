@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour {
 
     private bool isReloading;
 
+    public LevelManager levelManager;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -66,6 +68,7 @@ public class PlayerController : MonoBehaviour {
         healthBar.fillAmount = health / startHealth;
         if (health <= 0)
         {
+            levelManager.playerDied = true;
             Destroy(gameObject);
         }
         //health -= 12.75f * Time.deltaTime;
