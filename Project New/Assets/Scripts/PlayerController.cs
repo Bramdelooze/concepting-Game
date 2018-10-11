@@ -35,6 +35,9 @@ public class PlayerController : MonoBehaviour {
 
     public LevelManager levelManager;
 
+    private enum HorizontalMovementStates { STATIC, LEFT, RIGHT };
+    private HorizontalMovementStates currentHorizontalMovementState;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,15 +55,8 @@ public class PlayerController : MonoBehaviour {
             Jump();
         }
 
-        if (Input.GetKey(right))
-        {
-            Move(false);
-        }
-
-        if (Input.GetKey(left))
-        {
-            Move(true);
-        }
+        HandleInput();
+        MovementUpdate();
     }
 
     private void Update()
@@ -84,19 +80,37 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void Move(bool left)
+    private void HandleInput()
     {
-        if (!left)
+        currentHorizontalMovementState = HorizontalMovementStates.STATIC;
+
+        if (Input.GetKey(left))
+        {
+            currentHorizontalMovementState = HorizontalMovementStates.LEFT;
+        }
+        if(Input.GetKey(right))
+        {
+            currentHorizontalMovementState = HorizontalMovementStates.RIGHT;
+        }
+    }
+
+    private void MovementUpdate()
+    {
+        if(currentHorizontalMovementState == HorizontalMovementStates.STATIC)
+        {
+            return;
+        } else if(currentHorizontalMovementState == HorizontalMovementStates.LEFT)
+        {
+            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            rb.AddForce(Vector2.left * moveSpeed);
+        } else if(currentHorizontalMovementState == HorizontalMovementStates.RIGHT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            direction = 1;
             rb.AddForce(Vector2.right * moveSpeed);
         }
         else
         {
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            direction = -1;
-            rb.AddForce(Vector2.left * moveSpeed);
+            Debug.LogError("Unrecognised state " + currentHorizontalMovementState);
         }
     }
 
