@@ -6,15 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
-    public float moveSpeed;
-    public float jumpHeight;
-    public float reloadTime;
-    public float projectileSpeed;
-    public float shootingDamage;
-    public float health;
+    [SerializeField]
+    private float moveSpeed;
+    [SerializeField]
+    private float jumpHeight;
+    [SerializeField]
+    private float reloadTime;
+    [SerializeField]
+    private float projectileSpeed;
+    [SerializeField]
+    private float shootingDamage;
+    [SerializeField]
+    private float health;
     private float startHealth;
 
-    public int direction;
+    private int direction;
     public Image healthBar;
     public Text reloadText;
 
@@ -46,11 +52,11 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, .35f, groundLayer);
+        isGrounded = Physics2D.OverlapBox(GroundCheck.position, new Vector2(.98f, 0f), 0, groundLayer);
 
         rb.velocity = Vector2.up * rb.velocity.y;
 
-        if (Input.GetKeyDown(jump) && isGrounded)
+        if (isGrounded && Input.GetKey(jump))
         {
             Jump();
         }
@@ -102,10 +108,12 @@ public class PlayerController : MonoBehaviour {
         } else if(currentHorizontalMovementState == HorizontalMovementStates.LEFT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            direction = -1;
             rb.AddForce(Vector2.left * moveSpeed);
         } else if(currentHorizontalMovementState == HorizontalMovementStates.RIGHT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            direction = 1;
             rb.AddForce(Vector2.right * moveSpeed);
         }
         else
@@ -134,7 +142,6 @@ public class PlayerController : MonoBehaviour {
         {
             bulletDirection = Vector2.left * projectileSpeed;
         }
-
         bullet.GetComponent<Rigidbody2D>().velocity += bulletDirection;
     }
 
