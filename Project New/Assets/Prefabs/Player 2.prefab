@@ -197,11 +197,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0de72c922fdc36408d6ac8d1b42fae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 27f8ac772bf13e24a9eb0fbc016830d3, type: 2}
-  healthBar: {fileID: 114865120549062520, guid: e6e647dac2dc7204a9952e0776c9a7a6,
+  moveSpeed: 300
+  jumpHeight: 625
+  reloadTime: 1
+  projectileSpeed: 15
+  shootingDamage: 60
+  health: 500
+  healthBar: {fileID: 114768130577407470, guid: e6e647dac2dc7204a9952e0776c9a7a6,
     type: 2}
-  reloadText: {fileID: 114394196262639818}
-  GroundCheck: {fileID: 4491163536967508}
+  reloadText: {fileID: 114692087912718620, guid: 90b403858f3a5a748baaef901e2882f4,
+    type: 2}
+  GroundCheck: {fileID: 4154810076530436, guid: 90b403858f3a5a748baaef901e2882f4,
+    type: 2}
   groundLayer:
     serializedVersion: 2
     m_Bits: 256

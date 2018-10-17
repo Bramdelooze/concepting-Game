@@ -6,23 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
-    public Character character;
-
-    //[SerializeField]
-    //private float moveSpeed;
-    //[SerializeField]
-    //private float jumpHeight;
-    //[SerializeField]
-    //private float reloadTime;
-    //[SerializeField]
-    //private float projectileSpeed;
-    //[SerializeField]
-    //private float shootingDamage;
-    //[SerializeField]
-    //private float health;
     private float health;
 
-    private int direction;
     public Image healthBar;
     public Text reloadText;
 
@@ -30,10 +15,14 @@ public class PlayerController : MonoBehaviour {
     public LayerMask groundLayer;
     private bool isGrounded = false;
 
-    public KeyCode left;
-    public KeyCode right;
-    public KeyCode jump;
-    public KeyCode shoot;
+    [SerializeField]
+    private KeyCode left;
+    [SerializeField]
+    private KeyCode right;
+    [SerializeField]
+    private KeyCode jump;
+    [SerializeField]
+    private KeyCode shoot;
 
     private Rigidbody2D rb;
 
@@ -46,10 +35,14 @@ public class PlayerController : MonoBehaviour {
     private enum HorizontalMovementStates { STATIC, LEFT, RIGHT };
     private HorizontalMovementStates currentHorizontalMovementState;
 
+    private PlayerClass currentClass;
+
     private void Awake()
     {
+        print(groundLayer.value);
+        currentClass = new Character_1Class();
         rb = GetComponent<Rigidbody2D>();
-        health = character.health;
+        health = currentClass.Health;
     }
 
     private void FixedUpdate()
@@ -69,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        healthBar.fillAmount = health / character.health;
+        healthBar.fillAmount = health / currentClass.Health;
         if (health <= 0)
         {
             levelManager.playerDied = true;
@@ -110,13 +103,11 @@ public class PlayerController : MonoBehaviour {
         } else if(currentHorizontalMovementState == HorizontalMovementStates.LEFT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            direction = -1;
-            rb.AddForce(Vector2.left * character.moveSpeed);
+            rb.AddForce(Vector2.left * currentClass.MoveSpeed);
         } else if(currentHorizontalMovementState == HorizontalMovementStates.RIGHT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            direction = 1;
-            rb.AddForce(Vector2.right * character.moveSpeed);
+            rb.AddForce(Vector2.right * currentClass.MoveSpeed);
         }
         else
         {
@@ -126,23 +117,31 @@ public class PlayerController : MonoBehaviour {
 
     public void Jump()
     {
-        rb.AddForce(Vector2.up * character.jumpHeight);
+        rb.AddForce(Vector2.up * currentClass.JumpHeight);
     }
 
     void Fire()
     {
+        // The direction in which the player will shoot
+        int direction;
+        if (GetComponent<SpriteRenderer>().flipX)
+        {
+            direction = -1;
+        }
+        else direction = 1;
+
         Vector3 offset = new Vector3(direction, 0, 0);
-        health -= character.shootingDamage;
+        health -= currentClass.ShootingDamage;
         GameObject bullet = Instantiate(projectile, transform.position + offset, Quaternion.identity) as GameObject;
         Vector2 bulletDirection;
 
         if(direction == 1)
         {
-            bulletDirection = Vector2.right * character.projectileSpeed;
+            bulletDirection = Vector2.right * currentClass.ProjectileSpeed;
         }
         else
         {
-            bulletDirection = Vector2.left * character.projectileSpeed;
+            bulletDirection = Vector2.left * currentClass.ProjectileSpeed;
         }
         bullet.GetComponent<Rigidbody2D>().velocity += bulletDirection;
     }
@@ -151,7 +150,7 @@ public class PlayerController : MonoBehaviour {
     {
         isReloading = true;
         reloadText.text = "Reloading...";
-        yield return new WaitForSeconds(character.reloadTime);
+        yield return new WaitForSeconds(currentClass.ReloadTime);
         isReloading = false;
         reloadText.text = "";
         StopCoroutine(Reload());
