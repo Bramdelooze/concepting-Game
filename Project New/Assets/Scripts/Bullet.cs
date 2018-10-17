@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    public float damage = 50;
+    public float damage = 100;
 
     public float GetDamage()
     {

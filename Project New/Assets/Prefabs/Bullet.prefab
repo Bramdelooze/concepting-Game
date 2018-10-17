@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212014033723458400}
   - component: {fileID: 60491433238585406}
   - component: {fileID: 50123508308459700}
-  - component: {fileID: 114879102693284876}
+  - component: {fileID: 114255968036303008}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -215,7 +215,7 @@ PolygonCollider2D:
       - {x: 0.073363945, y: 0.49458843}
       - {x: 0.0490072, y: 0.4975925}
       - {x: 0.02453239, y: 0.49939778}
---- !u!114 &114879102693284876
+--- !u!114 &114255968036303008
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

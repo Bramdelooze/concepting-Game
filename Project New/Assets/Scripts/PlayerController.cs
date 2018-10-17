@@ -6,19 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
-    [SerializeField]
-    private float moveSpeed;
-    [SerializeField]
-    private float jumpHeight;
-    [SerializeField]
-    private float reloadTime;
-    [SerializeField]
-    private float projectileSpeed;
-    [SerializeField]
-    private float shootingDamage;
-    [SerializeField]
+    public Character character;
+
+    //[SerializeField]
+    //private float moveSpeed;
+    //[SerializeField]
+    //private float jumpHeight;
+    //[SerializeField]
+    //private float reloadTime;
+    //[SerializeField]
+    //private float projectileSpeed;
+    //[SerializeField]
+    //private float shootingDamage;
+    //[SerializeField]
+    //private float health;
     private float health;
-    private float startHealth;
 
     private int direction;
     public Image healthBar;
@@ -47,10 +49,10 @@ public class PlayerController : MonoBehaviour {
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        startHealth = health;
+        health = character.health;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapBox(GroundCheck.position, new Vector2(.98f, 0f), 0, groundLayer);
 
@@ -67,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        healthBar.fillAmount = health / startHealth;
+        healthBar.fillAmount = health / character.health;
         if (health <= 0)
         {
             levelManager.playerDied = true;
@@ -109,12 +111,12 @@ public class PlayerController : MonoBehaviour {
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
             direction = -1;
-            rb.AddForce(Vector2.left * moveSpeed);
+            rb.AddForce(Vector2.left * character.moveSpeed);
         } else if(currentHorizontalMovementState == HorizontalMovementStates.RIGHT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
             direction = 1;
-            rb.AddForce(Vector2.right * moveSpeed);
+            rb.AddForce(Vector2.right * character.moveSpeed);
         }
         else
         {
@@ -124,23 +126,23 @@ public class PlayerController : MonoBehaviour {
 
     public void Jump()
     {
-        rb.AddForce(Vector2.up * jumpHeight);
+        rb.AddForce(Vector2.up * character.jumpHeight);
     }
 
     void Fire()
     {
         Vector3 offset = new Vector3(direction, 0, 0);
-        health -= shootingDamage;
+        health -= character.shootingDamage;
         GameObject bullet = Instantiate(projectile, transform.position + offset, Quaternion.identity) as GameObject;
         Vector2 bulletDirection;
 
         if(direction == 1)
         {
-            bulletDirection = Vector2.right * projectileSpeed;
+            bulletDirection = Vector2.right * character.projectileSpeed;
         }
         else
         {
-            bulletDirection = Vector2.left * projectileSpeed;
+            bulletDirection = Vector2.left * character.projectileSpeed;
         }
         bullet.GetComponent<Rigidbody2D>().velocity += bulletDirection;
     }
@@ -149,7 +151,7 @@ public class PlayerController : MonoBehaviour {
     {
         isReloading = true;
         reloadText.text = "Reloading...";
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(character.reloadTime);
         isReloading = false;
         reloadText.text = "";
         StopCoroutine(Reload());
