@@ -800,6 +800,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4868040228071104, guid: 36b2296b29e34dc499021c0076bbbfe1,
     type: 2}
   m_PrefabInternal: {fileID: 894551661}
+--- !u!4 &992553319 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4491163536967508, guid: 2ab17773deb42b34ca2bf155927e2a48,
+    type: 2}
+  m_PrefabInternal: {fileID: 2031968082}
 --- !u!1 &1026031790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,6 +1477,11 @@ Prefab:
       propertyPath: levelManager
       value: 
       objectReference: {fileID: 1356276397}
+    - target: {fileID: 114460207445625526, guid: 2ab17773deb42b34ca2bf155927e2a48,
+        type: 2}
+      propertyPath: GroundCheck
+      value: 
+      objectReference: {fileID: 992553319}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ab17773deb42b34ca2bf155927e2a48, type: 2}
   m_IsPrefabParent: 0

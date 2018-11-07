@@ -37,10 +37,16 @@ public class PlayerController : MonoBehaviour {
 
     private PlayerClass currentClass;
 
+    private bool belowQuarterHealth;
+
     private void Awake()
     {
-        print(groundLayer.value);
+        //if(gameObject.name == "Player")
         currentClass = new Character_1Class();
+        //else
+        //{
+        //    currentClass = new Character_2Class();
+        //}
         rb = GetComponent<Rigidbody2D>();
         health = currentClass.Health;
     }
@@ -63,6 +69,11 @@ public class PlayerController : MonoBehaviour {
     private void Update()
     {
         healthBar.fillAmount = health / currentClass.Health;
+        //if(health <= currentClass.Health / 4)
+        //{
+        //    belowQuarterHealth = true;
+        //    healthBar.GetComponent<Image>().color = new Color(255, 0, 0);
+        //}
         if (health <= 0)
         {
             levelManager.playerDied = true;
@@ -99,6 +110,10 @@ public class PlayerController : MonoBehaviour {
     {
         if(currentHorizontalMovementState == HorizontalMovementStates.STATIC)
         {
+            if(health != currentClass.Health)
+            {
+                health += 5 * Time.deltaTime;
+            }
             return;
         } else if(currentHorizontalMovementState == HorizontalMovementStates.LEFT)
         {
@@ -131,7 +146,10 @@ public class PlayerController : MonoBehaviour {
         else direction = 1;
 
         Vector3 offset = new Vector3(direction, 0, 0);
-        health -= currentClass.ShootingDamage;
+        if (!belowQuarterHealth)
+        {
+            health -= currentClass.ShootingDamage;
+        }
         GameObject bullet = Instantiate(projectile, transform.position + offset, Quaternion.identity) as GameObject;
         Vector2 bulletDirection;
 
@@ -161,6 +179,16 @@ public class PlayerController : MonoBehaviour {
         if(collision.gameObject.name == "Bullet(Clone)")
         {
             health -= collision.GetComponent<Bullet>().damage;
+        }
+
+        if (collision.gameObject.name == "Healthpack(Clone)")
+        {
+            Destroy(collision.gameObject);
+            health += currentClass.Health / 3;
+            if (health >= currentClass.Health)
+            {
+                health = currentClass.Health;
+            }
         }
     }
 }

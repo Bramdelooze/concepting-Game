@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PlayerClass
 {
@@ -36,4 +34,17 @@ public class Character_1Class : PlayerClass
         shootingDamage = 60;
         health = 500;
     }
+}
+
+public class Character_2Class : PlayerClass
+{
+        public Character_2Class()
+        {
+            moveSpeed = 500;
+            jumpHeight = 625;
+            reloadTime = 0.3f;
+            projectileSpeed = 15;
+            shootingDamage = 30;
+            health = 250;
+        }
 }
