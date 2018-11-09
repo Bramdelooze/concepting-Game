@@ -33,7 +33,7 @@ public class HealthSpawner : MonoBehaviour {
         waitingToRespawn = true;
         Transform hpTransform = transform;
 
-        hpTransform.position = new Vector3(Random.Range(-8, 9), 5, 0);
+        hpTransform.position = new Vector3(Random.Range(-12, 13), 9, 0);
         yield return new WaitForSeconds(spawnTime);
         GameObject HealthPack = Instantiate(hpPrefab, hpTransform) as GameObject;
         gameObjects.Add(HealthPack);

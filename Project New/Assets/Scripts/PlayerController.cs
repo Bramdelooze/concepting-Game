@@ -39,14 +39,14 @@ public class PlayerController : MonoBehaviour {
 
     private bool belowQuarterHealth;
 
+    private bool isJumping = false;
+
+    private float jumpTimeCounter;
+
     private void Awake()
     {
-        //if(gameObject.name == "Player")
-        currentClass = new Character_1Class();
-        //else
-        //{
-        //    currentClass = new Character_2Class();
-        //}
+        currentClass = new Character_2Class();
+
         rb = GetComponent<Rigidbody2D>();
         health = currentClass.Health;
     }
@@ -57,10 +57,10 @@ public class PlayerController : MonoBehaviour {
 
         rb.velocity = Vector2.up * rb.velocity.y;
 
-        if (isGrounded && Input.GetKey(jump))
-        {
-            Jump();
-        }
+        //if (isGrounded && Input.GetKey(jump))
+        //{
+        //    Jump();
+        //}
 
         HandleInput();
         MovementUpdate();
@@ -79,9 +79,33 @@ public class PlayerController : MonoBehaviour {
             levelManager.playerDied = true;
             Destroy(gameObject);
         }
-        //health -= 12.75f * Time.deltaTime;
 
-        if (Input.GetKeyDown(shoot) && !isReloading)
+        if (Input.GetKeyDown(jump) && isGrounded)
+        {
+            isJumping = true;
+            jumpTimeCounter = currentClass.MaxJumpTime;
+            Jump();
+        }
+
+        if (Input.GetKey(jump) && isJumping)
+        {
+            if (jumpTimeCounter > 0)
+            {
+                Jump();
+                jumpTimeCounter -= Time.deltaTime;
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
+        if (Input.GetKeyUp(jump))
+        {
+            isJumping = false;
+        }
+
+        if (Input.GetKey(shoot) && !isReloading)
         {
             Fire();
             StartCoroutine(Reload());
@@ -110,19 +134,21 @@ public class PlayerController : MonoBehaviour {
     {
         if(currentHorizontalMovementState == HorizontalMovementStates.STATIC)
         {
-            if(health != currentClass.Health)
-            {
-                health += 5 * Time.deltaTime;
-            }
+           if(health != currentClass.Health)
+           {
+               health += 5 * Time.deltaTime;
+           }
             return;
         } else if(currentHorizontalMovementState == HorizontalMovementStates.LEFT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            rb.AddForce(Vector2.left * currentClass.MoveSpeed);
+            rb.velocity = new Vector2(-currentClass.MoveSpeed, rb.velocity.y);
+            //rb.AddForce(Vector2.left * currentClass.MoveSpeed);
         } else if(currentHorizontalMovementState == HorizontalMovementStates.RIGHT)
         {
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            rb.AddForce(Vector2.right * currentClass.MoveSpeed);
+            rb.velocity = new Vector2(currentClass.MoveSpeed, rb.velocity.y);
+            //rb.AddForce(Vector2.right * currentClass.MoveSpeed);
         }
         else
         {
@@ -132,7 +158,7 @@ public class PlayerController : MonoBehaviour {
 
     public void Jump()
     {
-        rb.AddForce(Vector2.up * currentClass.JumpHeight);
+        rb.velocity = Vector2.up * currentClass.JumpHeight;
     }
 
     void Fire()

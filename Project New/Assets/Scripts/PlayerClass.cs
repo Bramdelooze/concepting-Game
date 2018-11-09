@@ -10,6 +10,9 @@ public class PlayerClass
     protected float jumpHeight;
     public float JumpHeight { get { return jumpHeight; } }
 
+    protected float maxJumpTime;
+    public float MaxJumpTime { get { return maxJumpTime; } }
+
     protected float reloadTime;
     public float ReloadTime { get { return reloadTime; } }
 
@@ -40,11 +43,12 @@ public class Character_2Class : PlayerClass
 {
         public Character_2Class()
         {
-            moveSpeed = 500;
-            jumpHeight = 625;
-            reloadTime = 0.3f;
-            projectileSpeed = 15;
-            shootingDamage = 30;
-            health = 250;
+            moveSpeed = 10;
+            jumpHeight = 13;
+            maxJumpTime = 0.25f;
+            reloadTime = 1f;
+            projectileSpeed = 75;
+            shootingDamage = 60;
+            health = 500;
         }
 }
