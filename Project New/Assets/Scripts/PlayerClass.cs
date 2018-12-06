@@ -16,6 +16,12 @@ public class PlayerClass
     protected float reloadTime;
     public float ReloadTime { get { return reloadTime; } }
 
+    protected float shieldDeployTime;
+    public float ShieldDeployTime { get { return shieldDeployTime; } }
+
+    protected float shieldReloadTime;
+    public float ShieldReloadTime { get { return shieldReloadTime; } }
+
     protected float projectileSpeed;
     public float ProjectileSpeed { get { return projectileSpeed; } }
 
@@ -32,6 +38,7 @@ public class Character_1Class : PlayerClass
     {
         moveSpeed = 300;
         jumpHeight = 625;
+        maxJumpTime = 0.25f;
         reloadTime = 1;
         projectileSpeed = 15;
         shootingDamage = 60;
@@ -41,14 +48,16 @@ public class Character_1Class : PlayerClass
 
 public class Character_2Class : PlayerClass
 {
-        public Character_2Class()
-        {
-            moveSpeed = 10;
-            jumpHeight = 13;
-            maxJumpTime = 0.25f;
-            reloadTime = 1f;
-            projectileSpeed = 75;
-            shootingDamage = 60;
-            health = 500;
-        }
+    public Character_2Class()
+    {
+        moveSpeed = 10;
+        jumpHeight = 13;
+        maxJumpTime = 0.25f;
+        reloadTime = 1f;
+        shieldDeployTime = 1f;
+        shieldReloadTime = 4f;
+        projectileSpeed = 75;
+        shootingDamage = 60;
+        health = 500;
+    }
 }

@@ -10,13 +10,18 @@ public class LevelManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (playerDied && !isRestarting)
-        {
-            StartCoroutine(Reload());
-        }
-	}
+        //if (playerDied && !isRestarting)
+        //{
+        //    StartCoroutine(NextLevel());
+        //}
 
-    IEnumerator Reload()
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    IEnumerator NextLevel()
     {
         isRestarting = true;
         yield return new WaitForSeconds(3);

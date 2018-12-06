@@ -2,31 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
     private float health;
 
     public Image healthBar;
+    [SerializeField] private Image powerBar;
     public Text reloadText;
 
     public Transform GroundCheck;
     public LayerMask groundLayer;
     private bool isGrounded = false;
 
-    [SerializeField]
-    private KeyCode left;
-    [SerializeField]
-    private KeyCode right;
-    [SerializeField]
-    private KeyCode jump;
-    [SerializeField]
-    private KeyCode shoot;
+    [SerializeField] private KeyCode left;
+    [SerializeField] private KeyCode right;
+    [SerializeField] private KeyCode jump;
+    [SerializeField] private KeyCode shoot;
+    [SerializeField] private KeyCode createShield;
+
+    [SerializeField] private string horizontal;
+    [SerializeField] private KeyCode joystickJump;
+    [SerializeField] private KeyCode joystickShoot;
 
     private Rigidbody2D rb;
 
     public GameObject projectile;
+    public GameObject shieldPrefab;
 
     private bool isReloading;
 
@@ -37,30 +39,27 @@ public class PlayerController : MonoBehaviour {
 
     private PlayerClass currentClass;
 
-    private bool belowQuarterHealth;
-
     private bool isJumping = false;
-
     private float jumpTimeCounter;
+
+    private bool shieldEquipped;
+    private bool canEquipShield = true;
+    private GameObject shield;
 
     private void Awake()
     {
         currentClass = new Character_2Class();
 
         rb = GetComponent<Rigidbody2D>();
+
         health = currentClass.Health;
     }
 
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapBox(GroundCheck.position, new Vector2(.98f, 0f), 0, groundLayer);
+        isGrounded = Physics2D.OverlapBox(GroundCheck.position, new Vector2(1.2f, 0f), 0, groundLayer);
 
         rb.velocity = Vector2.up * rb.velocity.y;
-
-        //if (isGrounded && Input.GetKey(jump))
-        //{
-        //    Jump();
-        //}
 
         HandleInput();
         MovementUpdate();
@@ -69,25 +68,23 @@ public class PlayerController : MonoBehaviour {
     private void Update()
     {
         healthBar.fillAmount = health / currentClass.Health;
-        //if(health <= currentClass.Health / 4)
-        //{
-        //    belowQuarterHealth = true;
-        //    healthBar.GetComponent<Image>().color = new Color(255, 0, 0);
-        //}
+
         if (health <= 0)
         {
             levelManager.playerDied = true;
             Destroy(gameObject);
         }
 
-        if (Input.GetKeyDown(jump) && isGrounded)
+        if ((Input.GetKeyDown(jump) || Input.GetKeyDown(joystickJump)) && isGrounded)
         {
             isJumping = true;
+
             jumpTimeCounter = currentClass.MaxJumpTime;
+
             Jump();
         }
 
-        if (Input.GetKey(jump) && isJumping)
+        if ((Input.GetKey(jump) || Input.GetKey(joystickJump)) && isJumping)
         {
             if (jumpTimeCounter > 0)
             {
@@ -100,19 +97,21 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyUp(jump))
+        if (Input.GetKeyUp(jump) || Input.GetKeyUp(joystickJump))
         {
             isJumping = false;
         }
 
-        if (Input.GetKey(shoot) && !isReloading)
+        if ((Input.GetKey(shoot) || Input.GetKey(joystickShoot)) && !isReloading)
         {
             Fire();
             StartCoroutine(Reload());
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+        if (Input.GetKey(createShield) && canEquipShield)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            CreateShield();
+            canEquipShield = false;
         }
     }
 
@@ -120,11 +119,11 @@ public class PlayerController : MonoBehaviour {
     {
         currentHorizontalMovementState = HorizontalMovementStates.STATIC;
 
-        if (Input.GetKey(left))
+        if (Input.GetKey(left) || Input.GetAxis(horizontal) <= -.8)
         {
             currentHorizontalMovementState = HorizontalMovementStates.LEFT;
         }
-        if(Input.GetKey(right))
+        if(Input.GetKey(right) || Input.GetAxis(horizontal) >= .8)
         {
             currentHorizontalMovementState = HorizontalMovementStates.RIGHT;
         }
@@ -134,21 +133,17 @@ public class PlayerController : MonoBehaviour {
     {
         if(currentHorizontalMovementState == HorizontalMovementStates.STATIC)
         {
-           if(health != currentClass.Health)
-           {
-               health += 5 * Time.deltaTime;
-           }
             return;
         } else if(currentHorizontalMovementState == HorizontalMovementStates.LEFT)
         {
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            transform.rotation = Quaternion.identity;
+
             rb.velocity = new Vector2(-currentClass.MoveSpeed, rb.velocity.y);
-            //rb.AddForce(Vector2.left * currentClass.MoveSpeed);
         } else if(currentHorizontalMovementState == HorizontalMovementStates.RIGHT)
         {
-            gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+
             rb.velocity = new Vector2(currentClass.MoveSpeed, rb.velocity.y);
-            //rb.AddForce(Vector2.right * currentClass.MoveSpeed);
         }
         else
         {
@@ -165,17 +160,15 @@ public class PlayerController : MonoBehaviour {
     {
         // The direction in which the player will shoot
         int direction;
-        if (GetComponent<SpriteRenderer>().flipX)
+        if (transform.rotation.y == 0)
         {
             direction = -1;
         }
         else direction = 1;
 
         Vector3 offset = new Vector3(direction, 0, 0);
-        if (!belowQuarterHealth)
-        {
-            health -= currentClass.ShootingDamage;
-        }
+
+        health -= currentClass.ShootingDamage;
         GameObject bullet = Instantiate(projectile, transform.position + offset, Quaternion.identity) as GameObject;
         Vector2 bulletDirection;
 
@@ -187,7 +180,23 @@ public class PlayerController : MonoBehaviour {
         {
             bulletDirection = Vector2.left * currentClass.ProjectileSpeed;
         }
-        bullet.GetComponent<Rigidbody2D>().velocity += bulletDirection;
+        bullet.GetComponent<Rigidbody2D>().velocity += (bulletDirection);
+    }
+
+    void CreateShield()
+    {
+        int direction;
+        if (transform.rotation.y == 0)
+        {
+            direction = -1;
+        }
+        else direction = 1;
+
+        Vector3 offset = new Vector3(direction, 0, 0);
+
+        shield = Instantiate(shieldPrefab, transform.position + offset, transform.rotation) as GameObject;
+        shield.transform.parent = transform;
+        StartCoroutine(ShieldDeployTime());
     }
 
     IEnumerator Reload()
@@ -197,16 +206,24 @@ public class PlayerController : MonoBehaviour {
         yield return new WaitForSeconds(currentClass.ReloadTime);
         isReloading = false;
         reloadText.text = "";
-        StopCoroutine(Reload());
+    }
+
+    IEnumerator ShieldDeployTime()
+    {
+        canEquipShield = false;
+        yield return new WaitForSeconds(currentClass.ShieldDeployTime);
+        Destroy(shield);
+        StartCoroutine(ShieldReloadTime());
+    }
+
+    IEnumerator ShieldReloadTime()
+    {
+        yield return new WaitForSeconds(currentClass.ShieldReloadTime);
+        canEquipShield = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.name == "Bullet(Clone)")
-        {
-            health -= collision.GetComponent<Bullet>().damage;
-        }
-
         if (collision.gameObject.name == "Healthpack(Clone)")
         {
             Destroy(collision.gameObject);
@@ -215,6 +232,19 @@ public class PlayerController : MonoBehaviour {
             {
                 health = currentClass.Health;
             }
+        }
+
+        if (shieldEquipped)
+        {
+            if (collision.attachedRigidbody != null && ((collision.GetComponent<Rigidbody2D>().velocity.x > 0 && transform.eulerAngles.y == 0) || (collision.GetComponent<Rigidbody2D>().velocity.x < 0 && transform.eulerAngles.y == 180)))
+            {
+                 health += collision.gameObject.GetComponent<Bullet>().damage;
+            }
+        }
+
+        if (collision.gameObject.name == "Bullet(Clone)")
+        {
+            health -= collision.gameObject.GetComponent<Bullet>().damage;
         }
     }
 }

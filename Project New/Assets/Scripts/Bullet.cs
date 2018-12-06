@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour {
 
     public float damage = 100;
 
+    [HideInInspector] public Vector2 speed;
+
     public float GetDamage()
     {
         return damage;
@@ -13,7 +15,10 @@ public class Bullet : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Ground" || collision.tag == "Player")
+        Destroy(gameObject);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         Destroy(gameObject);
     }
 }
