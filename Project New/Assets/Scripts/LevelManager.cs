@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour {
         //    StartCoroutine(NextLevel());
         //}
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKey(KeyCode.Joystick1Button7) || Input.GetKey(KeyCode.Joystick2Button7))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

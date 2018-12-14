@@ -21,7 +21,7 @@ public class HealthPack : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.layer == 8)
         {
             collided = true;
         }

@@ -20,10 +20,14 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private KeyCode jump;
     [SerializeField] private KeyCode shoot;
     [SerializeField] private KeyCode createShield;
+    [SerializeField] private KeyCode ignorePlatform;
 
     [SerializeField] private string horizontal;
+    [SerializeField] private string vertical;
     [SerializeField] private KeyCode joystickJump;
     [SerializeField] private KeyCode joystickShoot;
+    [SerializeField] private KeyCode joystickCreateShield;
+    [SerializeField] private KeyCode joystickIgnorePlatform;
 
     private Rigidbody2D rb;
 
@@ -44,6 +48,11 @@ public class PlayerController : MonoBehaviour {
 
     private bool shieldEquipped;
     private bool canEquipShield = true;
+    private bool shieldReloading;
+
+    private float shieldDeployTime;
+    private float shieldReloadTime;
+
     private GameObject shield;
 
     private void Awake()
@@ -53,6 +62,8 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
 
         health = currentClass.Health;
+
+        shieldDeployTime = currentClass.ShieldDeployTime;
     }
 
     private void FixedUpdate()
@@ -63,10 +74,28 @@ public class PlayerController : MonoBehaviour {
 
         HandleInput();
         MovementUpdate();
+
+        if (Input.GetKey(ignorePlatform) || Input.GetKey(joystickIgnorePlatform))
+        {
+            RaycastHit2D hitL = Physics2D.Raycast(transform.position + new Vector3(-.58f, 0f), Vector2.down, 1.1f, groundLayer);
+            RaycastHit2D hitR = Physics2D.Raycast(transform.position + new Vector3(.54f, 0f), Vector2.down, 1.1f, groundLayer);
+            if (hitL.collider != null && hitL.collider.tag == "Platform")
+            {
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), hitL.collider, true);
+                StartCoroutine(DontIgnorePlatform(hitL.collider));
+            }
+            if (hitR.collider != null && hitR.collider.tag == "Platform")
+            {
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), hitR.collider, true);
+                StartCoroutine(DontIgnorePlatform(hitR.collider));
+            }
+        }
     }
 
     private void Update()
     {
+        if(GetComponent<Animator>() != null)
+            GetComponent<Animator>().SetFloat("Speed", Mathf.Abs(rb.velocity.x)); 
         healthBar.fillAmount = health / currentClass.Health;
 
         if (health <= 0)
@@ -102,16 +131,25 @@ public class PlayerController : MonoBehaviour {
             isJumping = false;
         }
 
-        if ((Input.GetKey(shoot) || Input.GetKey(joystickShoot)) && !isReloading)
+        if ((Input.GetKey(shoot) || Input.GetKey(joystickShoot)) && !isReloading && !shieldEquipped)
         {
             Fire();
             StartCoroutine(Reload());
         }
 
-        if (Input.GetKey(createShield) && canEquipShield)
+        if ((Input.GetKey(createShield) || Input.GetKey(joystickCreateShield)) && canEquipShield)
         {
             CreateShield();
             canEquipShield = false;
+        }
+
+        if (shieldEquipped)
+        {
+            ShieldDeployTime();
+        }
+        if (shieldReloading)
+        {
+            ShieldReloadTime();
         }
     }
 
@@ -196,7 +234,7 @@ public class PlayerController : MonoBehaviour {
 
         shield = Instantiate(shieldPrefab, transform.position + offset, transform.rotation) as GameObject;
         shield.transform.parent = transform;
-        StartCoroutine(ShieldDeployTime());
+        shieldEquipped = true;
     }
 
     IEnumerator Reload()
@@ -208,18 +246,38 @@ public class PlayerController : MonoBehaviour {
         reloadText.text = "";
     }
 
-    IEnumerator ShieldDeployTime()
+    IEnumerator DontIgnorePlatform(Collider2D currentIgnoredPlatform)
     {
-        canEquipShield = false;
-        yield return new WaitForSeconds(currentClass.ShieldDeployTime);
-        Destroy(shield);
-        StartCoroutine(ShieldReloadTime());
+        yield return new WaitForSeconds(.4f);
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), currentIgnoredPlatform, false);
     }
 
-    IEnumerator ShieldReloadTime()
+    void ShieldDeployTime()
     {
-        yield return new WaitForSeconds(currentClass.ShieldReloadTime);
-        canEquipShield = true;
+        canEquipShield = false;
+        shieldDeployTime -= currentClass.ShieldDeployTime * Time.deltaTime;
+        powerBar.fillAmount -= currentClass.ShieldDeployTime * Time.deltaTime;
+
+        if(shieldDeployTime <= 0)
+        {
+            Destroy(shield);
+            shieldEquipped = false;
+            shieldReloading = true;
+            shieldDeployTime = currentClass.ShieldDeployTime;
+        }
+    }
+
+    void ShieldReloadTime()
+    {
+        shieldReloadTime += Time.deltaTime;
+        powerBar.fillAmount = shieldReloadTime / currentClass.ShieldReloadTime;
+
+        if(shieldReloadTime >= currentClass.ShieldReloadTime)
+        {
+            shieldReloadTime = 0;
+            shieldReloading = false;
+            canEquipShield = true;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -234,17 +292,23 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (shieldEquipped)
-        {
-            if (collision.attachedRigidbody != null && ((collision.GetComponent<Rigidbody2D>().velocity.x > 0 && transform.eulerAngles.y == 0) || (collision.GetComponent<Rigidbody2D>().velocity.x < 0 && transform.eulerAngles.y == 180)))
-            {
-                 health += collision.gameObject.GetComponent<Bullet>().damage;
-            }
-        }
-
         if (collision.gameObject.name == "Bullet(Clone)")
         {
-            health -= collision.gameObject.GetComponent<Bullet>().damage;
+            if (!shieldEquipped)
+            {
+                health -= collision.gameObject.GetComponent<Bullet>().damage;
+            }
+            else if ((collision.GetComponent<Rigidbody2D>().velocity.x > 0 && transform.eulerAngles.y == 0) || (collision.GetComponent<Rigidbody2D>().velocity.x < 0 && transform.eulerAngles.y == 180))
+            {
+                if(health != currentClass.Health)
+                {
+                    health += 60f;
+                }
+                return;
+            } else
+            {
+                health -= collision.gameObject.GetComponent<Bullet>().damage;
+            }
         }
     }
 }
