@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
     public LayerMask groundLayer;
     private bool isGrounded = false;
 
+    [Header("Keyboard controls")]
     [SerializeField] private KeyCode left;
     [SerializeField] private KeyCode right;
     [SerializeField] private KeyCode jump;
@@ -24,12 +25,16 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField] private string horizontal;
     [SerializeField] private string vertical;
+
+    [Header("Controller Controls")]
     [SerializeField] private KeyCode joystickJump;
     [SerializeField] private KeyCode joystickShoot;
     [SerializeField] private KeyCode joystickCreateShield;
     [SerializeField] private KeyCode joystickIgnorePlatform;
 
     private Rigidbody2D rb;
+    [Header("Prefabs")]
+
 
     public GameObject projectile;
     public GameObject shieldPrefab;
@@ -57,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake()
     {
-        currentClass = new Character_2Class();
+        currentClass = new Character_3Class();
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -68,7 +73,7 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapBox(GroundCheck.position, new Vector2(1.2f, 0f), 0, groundLayer);
+        isGrounded = Physics2D.OverlapBox(GroundCheck.position, new Vector2(2.7f, 0f), 0, groundLayer); //(1.2f)
 
         rb.velocity = Vector2.up * rb.velocity.y;
 
@@ -77,8 +82,8 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKey(ignorePlatform) || Input.GetKey(joystickIgnorePlatform))
         {
-            RaycastHit2D hitL = Physics2D.Raycast(transform.position + new Vector3(-.58f, 0f), Vector2.down, 1.1f, groundLayer);
-            RaycastHit2D hitR = Physics2D.Raycast(transform.position + new Vector3(.54f, 0f), Vector2.down, 1.1f, groundLayer);
+            RaycastHit2D hitL = Physics2D.Raycast(transform.position + new Vector3(-1.35f, 0f), Vector2.down, 2.1f, groundLayer); //.58, 1.2?
+            RaycastHit2D hitR = Physics2D.Raycast(transform.position + new Vector3(1.35f, 0f), Vector2.down, 2.1f, groundLayer);
             if (hitL.collider != null && hitL.collider.tag == "Platform")
             {
                 Physics2D.IgnoreCollision(GetComponent<Collider2D>(), hitL.collider, true);
@@ -94,7 +99,9 @@ public class PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        if(GetComponent<Animator>() != null)
+        transform.position = new Vector2(Mathf.Round(transform.position.x * 100) / 100, Mathf.Round(transform.position.y * 100) / 100);
+
+        if (GetComponent<Animator>() != null)
             GetComponent<Animator>().SetFloat("Speed", Mathf.Abs(rb.velocity.x)); 
         healthBar.fillAmount = health / currentClass.Health;
 
@@ -200,9 +207,9 @@ public class PlayerController : MonoBehaviour {
         int direction;
         if (transform.rotation.y == 0)
         {
-            direction = -1;
+            direction = -2;
         }
-        else direction = 1;
+        else direction = 2;
 
         Vector3 offset = new Vector3(direction, 0, 0);
 
@@ -210,7 +217,7 @@ public class PlayerController : MonoBehaviour {
         GameObject bullet = Instantiate(projectile, transform.position + offset, Quaternion.identity) as GameObject;
         Vector2 bulletDirection;
 
-        if(direction == 1)
+        if(direction == 2)
         {
             bulletDirection = Vector2.right * currentClass.ProjectileSpeed;
         }
@@ -226,9 +233,9 @@ public class PlayerController : MonoBehaviour {
         int direction;
         if (transform.rotation.y == 0)
         {
-            direction = -1;
+            direction = -2;
         }
-        else direction = 1;
+        else direction = 2;
 
         Vector3 offset = new Vector3(direction, 0, 0);
 
@@ -309,6 +316,14 @@ public class PlayerController : MonoBehaviour {
             {
                 health -= collision.gameObject.GetComponent<Bullet>().damage;
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "PlayerKiller")
+        {
+            health = 0;
         }
     }
 }

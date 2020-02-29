@@ -1,23 +1,23 @@
 fileFormatVersion: 2
-guid: 9cdbbdd7565e9b249a0160adbd538677
+guid: c9c5fc662d86e5648a2a4c38ff1a646c
 TextureImporter:
   fileIDToRecycleName:
-    21300000: playerbook_walk_blue_0
-    21300002: playerbook_walk_blue_1
-    21300004: playerbook_walk_blue_2
-    21300006: playerbook_walk_blue_3
-    21300008: playerbook_walk_blue_4
-    21300010: playerbook_walk_blue_5
-    21300012: playerbook_walk_blue_6
-    21300014: playerbook_walk_blue_7
-    21300016: playerbook_walk_blue_8
-    21300018: playerbook_walk_blue_9
-    21300020: playerbook_walk_blue_10
-    21300022: playerbook_walk_blue_11
-    21300024: playerbook_walk_blue_12
-    21300026: playerbook_walk_blue_13
-    21300028: playerbook_walk_blue_14
-    21300030: playerbook_walk_blue_15
+    21300000: playerbook_walk_orange_0
+    21300002: playerbook_walk_orange_1
+    21300004: playerbook_walk_orange_2
+    21300006: playerbook_walk_orange_3
+    21300008: playerbook_walk_orange_4
+    21300010: playerbook_walk_orange_5
+    21300012: playerbook_walk_orange_6
+    21300014: playerbook_walk_orange_7
+    21300016: playerbook_walk_orange_8
+    21300018: playerbook_walk_orange_9
+    21300020: playerbook_walk_orange_10
+    21300022: playerbook_walk_orange_11
+    21300024: playerbook_walk_orange_12
+    21300026: playerbook_walk_orange_13
+    21300028: playerbook_walk_orange_14
+    21300030: playerbook_walk_orange_15
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -96,44 +96,11 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: playerbook_walk_blue_0
+      name: playerbook_walk_orange_0
       rect:
         serializedVersion: 2
         x: 0
@@ -147,13 +114,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 65aa2384a2e885f4d81265bf9c1397e5
+      spriteID: 785d707c98a6d8645bdd1da2a4c4f5b8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_1
+      name: playerbook_walk_orange_1
       rect:
         serializedVersion: 2
         x: 37
@@ -167,13 +134,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fcfd4ca0ebb0a0149940bac6c22c04b4
+      spriteID: 31a9a4ded5c9d0948a370cfd3364e1ad
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_2
+      name: playerbook_walk_orange_2
       rect:
         serializedVersion: 2
         x: 75
@@ -187,13 +154,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b5c75cae20524c4f941a176d250e1dc
+      spriteID: aba55684a76bd2148b9ef90efe5f8ff6
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_3
+      name: playerbook_walk_orange_3
       rect:
         serializedVersion: 2
         x: 110
@@ -207,13 +174,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39c34ef857808754eaae682eea45acd7
+      spriteID: af1fbc9843e12c34f8d00be3a60916cf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_4
+      name: playerbook_walk_orange_4
       rect:
         serializedVersion: 2
         x: 146
@@ -227,13 +194,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f34938d3d1cbed41ace36313882f62b
+      spriteID: 6fbcca52d98db184a820506c39793139
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_5
+      name: playerbook_walk_orange_5
       rect:
         serializedVersion: 2
         x: 180
@@ -247,13 +214,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e15ec5afcaad2d34d9944d38a679ddde
+      spriteID: cf30653abc71d214097d1b0d2a9338d6
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_6
+      name: playerbook_walk_orange_6
       rect:
         serializedVersion: 2
         x: 215
@@ -267,13 +234,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a467516c951a20544b4d5327d1dc31ac
+      spriteID: 12188524632bed541977f99799342553
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_7
+      name: playerbook_walk_orange_7
       rect:
         serializedVersion: 2
         x: 247
@@ -287,13 +254,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a54ec8630dfc6394fbd324f9b411cc45
+      spriteID: d3b6460ac69074a4e9ffc34180d564c3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_8
+      name: playerbook_walk_orange_8
       rect:
         serializedVersion: 2
         x: 280
@@ -307,13 +274,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4c8156f6bf2c2a42bb99787fe332e9d
+      spriteID: 4701176ab1bfa0c4ab262d3ca5ddee59
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_9
+      name: playerbook_walk_orange_9
       rect:
         serializedVersion: 2
         x: 317
@@ -327,13 +294,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a2387f5a86ed8c49b0ce8a6f17fd77a
+      spriteID: e814197e27511d04e80e3383254c30e8
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_10
+      name: playerbook_walk_orange_10
       rect:
         serializedVersion: 2
         x: 355
@@ -347,13 +314,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 36b4793175679194e86a2ddbc92cbcfa
+      spriteID: 5bd9453934f17a84c9d38fc07dc42d18
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_11
+      name: playerbook_walk_orange_11
       rect:
         serializedVersion: 2
         x: 390
@@ -367,13 +334,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2cfc58d9e51efe04e9662a74d76f8b91
+      spriteID: 1782b1af6973403438bed2447017edc3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_12
+      name: playerbook_walk_orange_12
       rect:
         serializedVersion: 2
         x: 426
@@ -387,13 +354,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7c2f945bb04b7c419e16e3c59451967
+      spriteID: 68b079e9bfbe5af4f98dda54734974c4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_13
+      name: playerbook_walk_orange_13
       rect:
         serializedVersion: 2
         x: 460
@@ -407,13 +374,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: edbb4a6cb7f881b4fb49d5c978393444
+      spriteID: 03f028f4996367246bd5180c1db1b71b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_14
+      name: playerbook_walk_orange_14
       rect:
         serializedVersion: 2
         x: 495
@@ -427,13 +394,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4fe8b45e81d68364a8f77521a8a39146
+      spriteID: 63286d075532ffc4a8ce9c3c9c8af7f5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: playerbook_walk_blue_15
+      name: playerbook_walk_orange_15
       rect:
         serializedVersion: 2
         x: 527
@@ -447,7 +414,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 760cd732e1e3ccb4e99acb78ef15ef96
+      spriteID: c565a905c1af33e4a8ecc5db82af2bbf
       vertices: []
       indices: 
       edges: []
@@ -455,7 +422,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 617a8715bc95af442a2d047712e1a419
     vertices: []
     indices: 
     edges: []

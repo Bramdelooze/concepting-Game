@@ -61,3 +61,19 @@ public class Character_2Class : PlayerClass
         health = 500;
     }
 }
+
+public class Character_3Class : PlayerClass
+{
+    public Character_3Class()
+    {
+        moveSpeed = 20;
+        jumpHeight = 33;
+        maxJumpTime = 0.25f;
+        reloadTime = 1f;
+        shieldDeployTime = 1f;
+        shieldReloadTime = 4f;
+        projectileSpeed = 120;
+        shootingDamage = 60;
+        health = 500;
+    }
+}

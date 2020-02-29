@@ -16,7 +16,7 @@ public class HealthPack : MonoBehaviour {
 
     void HealthPackFalling()
     {
-        transform.position += Vector3.down * .05f;
+        transform.position += Vector3.down * .1f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
