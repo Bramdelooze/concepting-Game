@@ -64,14 +64,14 @@ public class PlayerController : MonoBehaviour {
 
             jumpTimeCounter = currentClass.MaxJumpTime;
 
-            Jump();
+            //OnJump();
         }
 
         if ((Input.GetKey(jump) || Input.GetKey(joystickJump)) && isJumping)
         {
             if (jumpTimeCounter > 0)
             {
-                Jump();
+                //OnJump();
                 jumpTimeCounter -= Time.deltaTime;
             }
             else
@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void Jump()
+    public void OnJump()
     {
         rb.velocity = Vector2.up * currentClass.JumpHeight;
     }

@@ -1,0 +1,44 @@
+{
+    "name": "TestControls",
+    "maps": [
+        {
+            "name": "New action map",
+            "id": "3548cc7a-b9b7-47a2-965f-40b1fb9fe7ba",
+            "actions": [
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "23500456-ed85-413c-8ba5-8c331a65a874",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ef59e585-0cd5-42eb-b299-0ddd9edf82c0",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9076d7b0-40f6-4c5f-b207-070a4deb0716",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
